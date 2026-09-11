@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { X, Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 import { useAuth, ROLES } from '../../context/AuthContext'
 import { FEATURE_LOGIN } from '../../config/features'
+import { LogoMark } from '../ui/Logo'
 
 export default function AuthModal() {
   const {
@@ -82,8 +83,7 @@ export default function AuthModal() {
 
           {/* Logo + brand */}
           <div className="mb-7">
-            <img src="/logo-aura.png" alt="Aura" className="h-10 w-auto object-contain mb-2" />
-            <p className="text-xs text-gray-400 tracking-widest uppercase">Aromas Córdoba</p>
+            <LogoMark size={40} />
           </div>
 
           {/* Tabs */}
@@ -261,12 +261,9 @@ export default function AuthModal() {
           style={{ background: 'linear-gradient(160deg, #273145 0%, #1e2636 100%)' }}
         >
           {/* Logo en blanco */}
-          <img
-            src="/logo-aura.png"
-            alt="Aura"
-            className="h-16 w-auto object-contain mb-6"
-            style={{ filter: 'brightness(0) invert(1)' }}
-          />
+          <div className="mb-6">
+            <LogoMark size={56} dark />
+          </div>
 
           {/* Línea accent */}
           <div className="w-10 h-0.5 mb-6" style={{ backgroundColor: '#b6a183' }} />

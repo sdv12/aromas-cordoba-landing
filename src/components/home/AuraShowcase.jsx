@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { ShoppingCart, Sparkles } from 'lucide-react'
 import { fetchAuraShowcase } from '../../services/auraShowcase'
 import { useCart }   from '../../context/CartContext'
@@ -66,6 +67,7 @@ function AuraProductCard({ product }) {
 export default function AuraShowcase() {
   const [products, setProducts] = useState([])
   const [loading, setLoading]   = useState(true)
+  const { hash } = useLocation()
 
   useEffect(() => {
     const controller = new AbortController()
@@ -78,10 +80,17 @@ export default function AuraShowcase() {
     return () => controller.abort()
   }, [])
 
+  // Scroll al anchor "Aura" del nav una vez que la sección ya se renderizó.
+  useEffect(() => {
+    if (hash === '#aura' && products.length > 0) {
+      document.getElementById('aura')?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [hash, products])
+
   if (loading || products.length === 0) return null
 
   return (
-    <section className="py-14 bg-cream-200 dark:bg-navy-950">
+    <section id="aura" className="py-14 bg-cream-200 dark:bg-navy-950 scroll-mt-20">
       <div className="max-w-5xl mx-auto px-4">
         <div className="text-center mb-8">
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-accent-400 mb-2">

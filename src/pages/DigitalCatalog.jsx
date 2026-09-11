@@ -4,6 +4,7 @@ import { Printer, Download, Filter, ChevronDown, Tag } from 'lucide-react'
 import { useProducts }  from '../context/ProductsContext'
 import { useAuth }      from '../context/AuthContext'
 import { usePageTitle } from '../hooks/usePageTitle'
+import { LogoMark }     from '../components/ui/Logo'
 
 // ── Precio formateado ─────────────────────────────────────────
 function price(n) { return `$${Number(n).toLocaleString('es-AR')}` }
@@ -182,9 +183,8 @@ export default function DigitalCatalog() {
       {/* ── Portada — visible solo al imprimir ── */}
       <div className="hidden print:flex print:h-screen flex-col items-center justify-center"
            style={{ background: '#273145', breakAfter: 'page' }}>
-        <img src="/logo-aura.png" alt="Aura" className="h-32 w-auto object-contain mb-8"
-             style={{ filter: 'brightness(0) invert(1)' }} />
-        <div className="w-16 h-0.5 mb-6" style={{ backgroundColor: '#b6a183' }} />
+        <LogoMark size={100} dark />
+        <div className="w-16 h-0.5 mb-6 mt-8" style={{ backgroundColor: '#b6a183' }} />
         <p className="font-display text-2xl italic text-white/80">Catálogo de Productos</p>
         <p className="text-white/50 text-sm mt-2">{new Date().toLocaleDateString('es-AR', { year: 'numeric', month: 'long' })}</p>
       </div>
@@ -226,8 +226,9 @@ export default function DigitalCatalog() {
 
         {/* Footer del catálogo */}
         <div className="mt-16 pt-8 border-t border-cream-300 text-center print:mt-8">
-          <img src="/logo-aura.png" alt="Aura" className="h-8 w-auto object-contain mx-auto mb-3 opacity-60"
-               style={{ filter: 'grayscale(1)' }} />
+          <div className="flex justify-center mb-3 opacity-60">
+            <LogoMark size={28} />
+          </div>
           <p className="text-xs text-gray-400">
             Aromas Córdoba — de la familia Aura · Todos los precios son en pesos argentinos e incluyen IVA · Sujeto a stock disponible
           </p>

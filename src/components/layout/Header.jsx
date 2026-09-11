@@ -17,6 +17,7 @@ const NAV_LINKS = [
   { to: '/catalogo',   label: 'Productos' },
   { to: '/mayorista',  label: 'Venta Mayorista' },
   { to: '/ofertas',    label: 'Ofertas' },
+  { to: '/#aura',       label: 'Aura' },
   { to: '/nosotros',   label: 'Contacto' },
 ]
 
