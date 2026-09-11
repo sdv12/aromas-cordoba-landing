@@ -9,6 +9,7 @@ import { useToast }    from '../context/ToastContext'
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed'
 import { usePageTitle }      from '../hooks/usePageTitle'
 import { WHATSAPP_NUMBER }   from '../config/contact'
+import AuraShowcase          from '../components/home/AuraShowcase'
 
 const SLIDES = [
   {
@@ -228,6 +229,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Vidriera de Aura (limpieza) — fetch independiente, no es el catálogo principal */}
+      <AuraShowcase />
 
       {/* Categories */}
       <section className="py-16 bg-cream-100 dark:bg-navy-900">

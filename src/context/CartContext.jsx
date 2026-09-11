@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useEffect } from 'react'
+import { createContext, useContext, useReducer, useEffect, useCallback } from 'react'
 
 const CartContext = createContext()
 const KEY = 'aromascba_cart'
@@ -31,26 +31,29 @@ function cartReducer(state, action) {
       )
     }
     // Re-sincroniza stock / precio / imagen con el catálogo actual del panel
+    // (solo ítems del catálogo principal "aromas" — los de la vidriera "aura"
+    // no pasan por ProductsContext y se dejan como están).
     case 'SYNC': {
       const byId = new Map(action.products.map(p => [String(p.id), p]))
-      return state
+      let changed = false
+      const next = state
         .map(i => {
+          if (i.catalog === 'aura') return i
           const p = byId.get(String(i.id))
-          if (!p) return { ...i, stock: 0, _missing: true }
+          if (!p) { changed = true; return { ...i, stock: 0, _missing: true } }
           const stock = topeStock(p.stock)
-          return {
-            ...i,
-            name: p.name,
-            image: p.image,
-            price: p.price,
-            wholesalePrice: p.wholesalePrice,
-            stock: p.stock,
-            _missing: false,
-            qty: Math.max(1, Math.min(i.qty, stock || 1)),
-          }
+          const qty   = Math.max(1, Math.min(i.qty, stock || 1))
+          const same =
+            i.name === p.name && i.image === p.image && i.price === p.price &&
+            i.wholesalePrice === p.wholesalePrice && i.stock === p.stock && i.qty === qty
+          if (same) return i
+          changed = true
+          return { ...i, name: p.name, image: p.image, price: p.price, wholesalePrice: p.wholesalePrice, stock: p.stock, _missing: false, qty }
         })
         // saca del carrito lo que ya no existe o quedó sin stock
         .filter(i => !i._missing && (i.stock == null || i.stock > 0))
+      if (!changed && next.length === state.length) return state
+      return next
     }
     case 'CLEAR':
       return []
@@ -87,7 +90,7 @@ export function CartProvider({ children }) {
   const removeItem  = id        => dispatch({ type: 'REMOVE', id })
   const updateQty   = (id, qty) => dispatch({ type: 'UPDATE_QTY', id, qty })
   const clearCart   = ()        => dispatch({ type: 'CLEAR' })
-  const syncCatalog = products  => dispatch({ type: 'SYNC', products })
+  const syncCatalog = useCallback(products => dispatch({ type: 'SYNC', products }), [])
 
   const totalItems = items.reduce((s, i) => s + i.qty, 0)
   const subtotal   = (wholesale) =>
