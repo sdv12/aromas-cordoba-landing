@@ -17,9 +17,14 @@ const NAV_LINKS = [
   { to: '/catalogo',   label: 'Productos' },
   { to: '/mayorista',  label: 'Venta Mayorista' },
   { to: '/ofertas',    label: 'Ofertas' },
-  { to: '/#aura',       label: 'Aura' },
+  { to: '/#aura',      label: 'Aura', special: true },
   { to: '/nosotros',   label: 'Contacto' },
 ]
+
+// Pill siempre destacada (no solo cuando está activo), con un color propio
+// para distinguirla como el link "de otra marca" dentro del nav.
+const SPECIAL_NAV_CLASS =
+  'text-emerald-700 bg-emerald-50 hover:bg-emerald-100 dark:text-emerald-300 dark:bg-emerald-950/40 dark:hover:bg-emerald-950/60 font-semibold'
 
 const ROLE_LABELS = {
   general:       { label: 'Visitante',     color: 'text-gray-500', icon: User },
@@ -71,14 +76,16 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-0.5">
-            {NAV_LINKS.map(({ to, label }) => (
+            {NAV_LINKS.map(({ to, label, special }) => (
               <Link
                 key={to}
                 to={to}
                 className={`btn-ghost text-sm px-3 py-2 ${
-                  isActive(to)
-                    ? 'text-primary-700 dark:text-accent-400 bg-cream-200 dark:bg-navy-800 font-semibold'
-                    : ''
+                  special
+                    ? `${SPECIAL_NAV_CLASS} rounded-full`
+                    : isActive(to)
+                      ? 'text-primary-700 dark:text-accent-400 bg-cream-200 dark:bg-navy-800 font-semibold'
+                      : ''
                 }`}
               >
                 {label}
@@ -203,11 +210,15 @@ export default function Header() {
       {mobileOpen && (
         <div className="md:hidden bg-cream-100 dark:bg-navy-900 border-t border-cream-300 dark:border-navy-800 shadow-lg">
           <nav className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
-            {NAV_LINKS.map(({ to, label }) => (
+            {NAV_LINKS.map(({ to, label, special }) => (
               <Link
                 key={to}
                 to={to}
-                className={`btn-ghost text-sm justify-start ${isActive(to) ? 'text-primary-700 bg-cream-200 dark:bg-navy-800 font-semibold' : ''}`}
+                className={`btn-ghost text-sm justify-start ${
+                  special
+                    ? `${SPECIAL_NAV_CLASS} rounded-full`
+                    : isActive(to) ? 'text-primary-700 bg-cream-200 dark:bg-navy-800 font-semibold' : ''
+                }`}
               >
                 {label}
               </Link>
