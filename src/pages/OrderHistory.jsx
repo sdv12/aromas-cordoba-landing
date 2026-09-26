@@ -78,6 +78,9 @@ function OrderCard({ order }) {
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-800 dark:text-white truncate">{item.name}</p>
+                    {item.brand && item.brand !== 'Aromas Córdoba' && (
+                      <p className="text-xs text-gray-400 truncate">{item.brand}</p>
+                    )}
                     <p className="text-xs text-gray-400">{item.qty} × ${unit.toLocaleString('es-AR')}</p>
                   </div>
                   <p className="text-sm font-semibold text-gray-900 dark:text-white shrink-0">

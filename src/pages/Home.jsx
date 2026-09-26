@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ChevronLeft, ChevronRight, Star, Truck, Award, Headphones, Package, Clock, ShoppingCart } from 'lucide-react'
+import { ArrowRight, ChevronLeft, ChevronRight, Star, Truck, Award, Headphones, Package, Clock, ShoppingCart, Minus, Plus } from 'lucide-react'
 import { useProducts } from '../context/ProductsContext'
 import ProductCard     from '../components/products/ProductCard'
 import { useAuth }     from '../context/AuthContext'
@@ -109,10 +109,12 @@ export default function Home() {
   // Si Firebase no tiene productos con isFeatured, usamos el demo hardcodeado
   const displayFeatured = featured.length > 0 ? featured : FEATURED_DEMO
 
-  // Modal de fragancia para promos
+  // Modal de fragancia para promos — cantidades por fragancia, deben sumar el pack (24/48)
   const [promoModal, setPromoModal] = useState(null) // { promo, qty }
-  const [selectedFragancia, setSelectedFragancia] = useState('')
+  const [fragQtys, setFragQtys] = useState({}) // { [fragancia]: cantidad }
   const [marqueeHovered, setMarqueeHovered] = useState(false)
+
+  const fragTotal = Object.values(fragQtys).reduce((s, n) => s + n, 0)
 
   useEffect(() => {
     const id = setInterval(() => setSlide(s => (s + 1) % SLIDES.length), 5000)
@@ -120,33 +122,58 @@ export default function Home() {
   }, [])
 
   const openPromoModal = (promo, qty) => {
-    setSelectedFragancia('')
+    setFragQtys({})
     setPromoModal({ promo, qty })
+  }
+
+  const setFragQty = (frag, delta) => {
+    setFragQtys(prev => {
+      const current = prev[frag] || 0
+      const total   = Object.values(prev).reduce((s, n) => s + n, 0)
+      if (delta > 0 && total >= promoModal.qty) return prev // no pasar el tamaño del pack
+      const next = Math.max(0, current + delta)
+      const copy = { ...prev, [frag]: next }
+      if (next === 0) delete copy[frag]
+      return copy
+    })
   }
 
   const confirmPromo = () => {
     if (!promoModal) return
     const { promo, qty } = promoModal
-    const fragLabel = selectedFragancia ? ` — ${selectedFragancia}` : ''
-    const item = {
-      id: `promo-${promo.producto.replace(/\s+/g, '-').toLowerCase()}-${qty}-${selectedFragancia.replace(/\s+/g,'-')}`,
-      name: `[PROMO] ${promo.producto}${fragLabel} — Pack ${qty} u. (${promo.presentacion})`,
-      price: qty === 24 ? promo.uni24 : promo.uni48,
-      wholesalePrice: qty === 24 ? promo.uni24 : promo.uni48,
-      image: '',
-      brand: 'Aura',
-      stock: 999,
-      rating: 5,
-      reviews: 0,
+    const unitPrice = (qty === 24 ? promo.uni24 : promo.uni48) / qty
+    const chosen = Object.entries(fragQtys).filter(([, n]) => n > 0)
+    if (chosen.length === 0 || fragTotal !== qty) return
+
+    for (const [frag, fragQty] of chosen) {
+      const item = {
+        id: `promo-${promo.producto.replace(/\s+/g, '-').toLowerCase()}-${qty}-${frag.replace(/\s+/g, '-')}`,
+        catalog: 'promo',
+        name: `[PROMO] ${promo.producto} — ${frag} (Pack ${qty} u. — ${promo.presentacion})`,
+        price: Math.round(unitPrice),
+        wholesalePrice: Math.round(unitPrice),
+        image: '',
+        brand: 'Aura',
+        stock: 999,
+        rating: 5,
+        reviews: 0,
+      }
+      for (let i = 0; i < fragQty; i++) addItem(item)
     }
-    addItem(item)
-    addToast({ type: 'success', title: 'Promo agregada', message: item.name })
+
+    const detalle = chosen.map(([frag, n]) => `${n}x ${frag}`).join(', ')
+    addToast({
+      type: 'success',
+      title: 'Promo agregada',
+      message: `${promo.producto} — Pack ${qty} u. (${detalle})`,
+    })
     setPromoModal(null)
   }
 
   const addPromoToCart = (promo, qty) => {
     const item = {
       id: `promo-${promo.producto.replace(/\s+/g, '-').toLowerCase()}-${qty}`,
+      catalog: 'promo',
       name: `${promo.producto} — Pack ${qty} u. (${promo.presentacion})`,
       price: qty === 24 ? promo.uni24 : promo.uni48,
       wholesalePrice: qty === 24 ? promo.uni24 : promo.uni48,
@@ -384,7 +411,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Modal fragancia promo */}
+      {/* Modal fragancia promo — cantidades por fragancia, deben sumar el pack */}
       {promoModal && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
           <div className="bg-white dark:bg-navy-900 rounded-2xl shadow-2xl w-full max-w-sm p-6 space-y-4">
@@ -395,22 +422,53 @@ export default function Home() {
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Elegí la fragancia:</p>
-              <div className="grid grid-cols-2 gap-1.5 max-h-52 overflow-y-auto pr-1">
-                {FRAGANCIAS.map(f => (
-                  <button
-                    key={f}
-                    onClick={() => setSelectedFragancia(f)}
-                    className={`text-xs px-3 py-2 rounded-lg border text-left transition-all ${
-                      selectedFragancia === f
-                        ? 'border-primary-600 bg-primary-50 dark:bg-navy-800 text-primary-700 dark:text-accent-400 font-semibold'
-                        : 'border-cream-300 dark:border-navy-600 text-gray-600 dark:text-gray-400 hover:border-primary-400'
-                    }`}
-                  >
-                    {f}
-                  </button>
-                ))}
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Elegí las fragancias y cantidades:</p>
+                <p className={`text-xs font-bold ${fragTotal === promoModal.qty ? 'text-green-600' : 'text-gray-400'}`}>
+                  {fragTotal} / {promoModal.qty}
+                </p>
               </div>
+              <div className="space-y-1 max-h-60 overflow-y-auto pr-1">
+                {FRAGANCIAS.map(f => {
+                  const n = fragQtys[f] || 0
+                  return (
+                    <div
+                      key={f}
+                      className={`flex items-center justify-between gap-2 px-3 py-1.5 rounded-lg border transition-all ${
+                        n > 0
+                          ? 'border-primary-600 bg-primary-50 dark:bg-navy-800'
+                          : 'border-cream-300 dark:border-navy-600'
+                      }`}
+                    >
+                      <span className={`text-xs ${n > 0 ? 'text-primary-700 dark:text-accent-400 font-semibold' : 'text-gray-600 dark:text-gray-400'}`}>
+                        {f}
+                      </span>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          onClick={() => setFragQty(f, -1)}
+                          disabled={n === 0}
+                          className="w-6 h-6 flex items-center justify-center rounded-full border border-cream-300 dark:border-navy-600 text-gray-500 disabled:opacity-30 hover:border-primary-500 hover:text-primary-600 transition-colors"
+                        >
+                          <Minus size={11} />
+                        </button>
+                        <span className="w-5 text-center text-xs font-bold text-gray-800 dark:text-white">{n}</span>
+                        <button
+                          onClick={() => setFragQty(f, 1)}
+                          disabled={fragTotal >= promoModal.qty}
+                          className="w-6 h-6 flex items-center justify-center rounded-full border border-cream-300 dark:border-navy-600 text-gray-500 disabled:opacity-30 hover:border-primary-500 hover:text-primary-600 transition-colors"
+                        >
+                          <Plus size={11} />
+                        </button>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+              {fragTotal !== promoModal.qty && (
+                <p className="text-[11px] text-gray-400 mt-2">
+                  Elegí {promoModal.qty - fragTotal > 0 ? `${promoModal.qty - fragTotal} unidad${promoModal.qty - fragTotal > 1 ? 'es' : ''} más` : 'las unidades'} para completar el pack.
+                </p>
+              )}
             </div>
 
             <div className="flex gap-3 pt-1">
@@ -422,7 +480,7 @@ export default function Home() {
               </button>
               <button
                 onClick={confirmPromo}
-                disabled={!selectedFragancia}
+                disabled={fragTotal !== promoModal.qty}
                 className="flex-1 flex items-center justify-center gap-1.5 bg-primary-700 hover:bg-primary-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold py-2.5 rounded-lg transition-all"
               >
                 <ShoppingCart size={15} /> Agregar

@@ -31,14 +31,14 @@ function cartReducer(state, action) {
       )
     }
     // Re-sincroniza stock / precio / imagen con el catálogo actual del panel
-    // (solo ítems del catálogo principal "aromas" — los de la vidriera "aura"
-    // no pasan por ProductsContext y se dejan como están).
+    // (solo ítems del catálogo principal "aromas" — cualquier ítem con `catalog`
+    // propio, ej. "aura" o "promo", no viene de ProductsContext y se deja como está).
     case 'SYNC': {
       const byId = new Map(action.products.map(p => [String(p.id), p]))
       let changed = false
       const next = state
         .map(i => {
-          if (i.catalog === 'aura') return i
+          if (i.catalog) return i
           const p = byId.get(String(i.id))
           if (!p) { changed = true; return { ...i, stock: 0, _missing: true } }
           const stock = topeStock(p.stock)

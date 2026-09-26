@@ -14,9 +14,11 @@ export default function ProductFilters({ filters, onChange, onReset, isMobile })
     onChange({ ...filters, brands: next })
   }
 
-  // Categoría: selección única (radio)
-  const selectCategory = id => {
-    const next = filters.categories.includes(id) ? [] : [id]
+  // Categoría: multi-selección (checkbox, igual que Marca)
+  const toggleCategory = id => {
+    const next = filters.categories.includes(id)
+      ? filters.categories.filter(c => c !== id)
+      : [...filters.categories, id]
     onChange({ ...filters, categories: next })
   }
 
@@ -81,11 +83,10 @@ export default function ProductFilters({ filters, onChange, onReset, isMobile })
           {CATEGORIES.map(cat => (
             <label key={cat.id} className="flex items-center gap-2 cursor-pointer group">
               <input
-                type="radio"
-                name="category-filter"
+                type="checkbox"
                 checked={filters.categories.includes(cat.id)}
-                onChange={() => selectCategory(cat.id)}
-                className="w-4 h-4 border-gray-300 text-primary-600 focus:ring-primary-500"
+                onChange={() => toggleCategory(cat.id)}
+                className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
               />
               <span className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
                 {cat.icon} {cat.label}

@@ -82,6 +82,9 @@ export default function CartSidebar() {
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-semibold text-gray-800 dark:text-gray-100 line-clamp-2 leading-tight">{item.name}</p>
+                      {item.brand && item.brand !== 'Aromas Córdoba' && (
+                        <p className="text-[11px] text-gray-400">{item.brand}</p>
+                      )}
                       <p className="text-xs text-gray-400 mt-0.5">
                         x{item.qty} · ${price.toLocaleString('es-AR')} c/u
                       </p>

@@ -120,7 +120,8 @@ export default function CartPage() {
   const buildWA = () => {
     const lines = items.map(i => {
       const p = isWholesale ? i.wholesalePrice : i.price
-      return `• ${i.name} x${i.qty} = $${(p * i.qty).toLocaleString('es-AR')}`
+      const marca = i.brand && i.brand !== 'Aromas Córdoba' ? ` — ${i.brand}` : ''
+      return `• ${i.name}${marca} x${i.qty} = $${(p * i.qty).toLocaleString('es-AR')}`
     }).join('\n')
 
     const shippingLine = shippingId === 'cordoba'
@@ -209,6 +210,9 @@ export default function CartPage() {
                       />
                       <div>
                         <p className="font-semibold text-sm text-gray-900 dark:text-white leading-tight">{item.name}</p>
+                        {item.brand && item.brand !== 'Aromas Córdoba' && (
+                          <p className="text-xs text-gray-400">{item.brand}</p>
+                        )}
                         <p className="text-xs text-gray-400">{isWholesale ? 'Precio mayorista' : 'Precio minorista'}</p>
                       </div>
                     </div>
