@@ -93,14 +93,31 @@ function Bubble({ from, children }) {
   )
 }
 
+const GREETING_KEY = 'aromascba_chat_greeting_seen'
+
 export default function ChatAssistant() {
   const [open, setOpen]     = useState(false)
   const [history, setHistory] = useState([]) // { q, a }[]
+  const [showGreeting, setShowGreeting] = useState(false)
   const endRef = useRef(null)
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [history, open])
+
+  // Viñeta de bienvenida: aparece una sola vez (por navegador), a los pocos
+  // segundos de entrar, invitando a abrir el asistente. No vuelve a mostrarse
+  // una vez que el usuario la cierra o abre el chat.
+  useEffect(() => {
+    if (localStorage.getItem(GREETING_KEY)) return
+    const t = setTimeout(() => setShowGreeting(true), 2500)
+    return () => clearTimeout(t)
+  }, [])
+
+  const dismissGreeting = () => {
+    setShowGreeting(false)
+    localStorage.setItem(GREETING_KEY, '1')
+  }
 
   const ask = (item) => setHistory((h) => [...h, item])
 
@@ -108,9 +125,27 @@ export default function ChatAssistant() {
 
   return (
     <>
+      {/* Viñeta de bienvenida */}
+      {showGreeting && !open && (
+        <div className="fixed bottom-24 left-6 z-40 max-w-[15rem] animate-toast">
+          <div className="relative bg-white dark:bg-navy-800 rounded-2xl rounded-bl-sm shadow-xl border border-cream-200 dark:border-navy-700 p-3.5 pr-7">
+            <button
+              onClick={dismissGreeting}
+              aria-label="Cerrar"
+              className="absolute top-1.5 right-1.5 p-1 text-gray-300 hover:text-gray-500 dark:hover:text-gray-300 transition-colors"
+            >
+              <X size={13} />
+            </button>
+            <p className="text-sm text-gray-700 dark:text-gray-200 leading-snug">
+              ¡Hola! 👋 ¿Tenés dudas sobre envíos, pagos o tu pedido? Preguntame acá.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Trigger */}
       <button
-        onClick={() => setOpen((s) => !s)}
+        onClick={() => { setOpen((s) => !s); dismissGreeting() }}
         aria-label="Asistente virtual"
         className="fixed bottom-6 left-6 z-40 w-14 h-14 bg-primary-700 hover:bg-primary-800 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110"
       >
