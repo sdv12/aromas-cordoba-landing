@@ -11,9 +11,8 @@ import { useCart }    from '../context/CartContext'
 import { useAuth }    from '../context/AuthContext'
 import { useOrders }  from '../context/OrdersContext'
 import { WHATSAPP_NUMBER } from '../config/contact'
+import { FREE_THRESHOLD, CORDOBA_COST } from '../config/shipping'
 
-const FREE_THRESHOLD     = 120000
-const CORDOBA_COST       = 8000
 const CUSTOMER_KEY       = 'aromascba_customer_v2'
 
 const SHIPPING_OPTIONS = [

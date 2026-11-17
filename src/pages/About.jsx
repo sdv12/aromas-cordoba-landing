@@ -1,8 +1,9 @@
 import { MapPin, Phone, Mail, Clock, Heart, Leaf, Award } from 'lucide-react'
 import { usePageTitle } from '../hooks/usePageTitle'
+import { WHATSAPP_NUMBER, CONTACT_EMAIL } from '../config/contact'
 
 const TEAM = [
-  { name: 'Valeria Moreno', role: 'Fundadora & Directora', img: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=120&h=120&fit=crop&crop=face' },
+  { name: 'Valeria Moreno', role: 'Fundadora & Directora', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&crop=face' },
   { name: 'Santiago Ruiz',  role: 'Gerente de Ventas',    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face' },
   { name: 'Lucia Fernández',role: 'Atención al Cliente',  img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=face' },
 ]
@@ -55,7 +56,7 @@ export default function About() {
           <div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Nuestra Historia</h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-3">
-              Aromas CBA nació en 2018 en Córdoba Capital, de la mano de Valeria Moreno, con la idea de acercar fragancias de calidad premium a precios accesibles para el hogar argentino.
+              Aromas Córdoba nació en 2018 en Córdoba Capital, de la mano de Valeria Moreno, con la idea de acercar fragancias de calidad premium a precios accesibles para el hogar argentino.
             </p>
             <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-3">
               Lo que empezó como un emprendimiento familiar creció rápidamente gracias a la confianza de nuestros clientes. Hoy contamos con más de 200 productos y una red de distribuidores en toda la provincia.
@@ -96,7 +97,7 @@ export default function About() {
                 onSubmit={e => {
                   e.preventDefault()
                   const fd = new FormData(e.target)
-                  window.open(`mailto:hola@aromascba.com?subject=Consulta&body=${encodeURIComponent(`Nombre: ${fd.get('name')}\nEmail: ${fd.get('email')}\n\n${fd.get('msg')}`)}`, '_blank')
+                  window.open(`mailto:${CONTACT_EMAIL}?subject=Consulta&body=${encodeURIComponent(`Nombre: ${fd.get('name')}\nEmail: ${fd.get('email')}\n\n${fd.get('msg')}`)}`, '_blank')
                 }}
                 className="space-y-4"
               >
@@ -108,8 +109,8 @@ export default function About() {
 
               <div className="mt-6 space-y-3">
                 {[
-                  { icon: Phone, label: '+54 9 351 600-0000', href: 'tel:+5493516000000' },
-                  { icon: Mail,  label: 'hola@aromascba.com', href: 'mailto:hola@aromascba.com' },
+                  { icon: Phone, label: `+${WHATSAPP_NUMBER}`, href: `tel:+${WHATSAPP_NUMBER}` },
+                  { icon: Mail,  label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
                   { icon: MapPin,label: 'Córdoba Capital, Argentina', href: '#mapa' },
                   { icon: Clock, label: 'Lun–Vie 9:00–18:00 · Sáb 9:00–13:00', href: null },
                 ].map(({ icon: Icon, label, href }) => (
@@ -134,7 +135,7 @@ export default function About() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Mapa Aromas CBA"
+                title="Mapa Aromas Córdoba"
               />
             </div>
           </div>

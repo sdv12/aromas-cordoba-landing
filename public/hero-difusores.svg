@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 600">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e2a3e"/>
+      <stop offset="100%" stop-color="#3a4a68"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#b6a183" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#b6a183" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1400" height="600" fill="url(#bg)"/>
+  <rect width="1400" height="600" fill="url(#glow)"/>
+  <!-- halo de difusión -->
+  <circle cx="1080" cy="260" r="180" fill="none" stroke="#b6a183" stroke-opacity="0.25" stroke-width="2"/>
+  <circle cx="1080" cy="260" r="240" fill="none" stroke="#b6a183" stroke-opacity="0.15" stroke-width="2"/>
+  <circle cx="1080" cy="260" r="300" fill="none" stroke="#b6a183" stroke-opacity="0.08" stroke-width="2"/>
+  <!-- varillas difusor -->
+  <g transform="translate(1040,230)">
+    <ellipse cx="0" cy="170" rx="46" ry="14" fill="#0f1725" opacity="0.4"/>
+    <path d="M -30,170 L -24,70 Q -24,40 0,40 Q 24,40 24,70 L 30,170 Z" fill="#273145" stroke="#b6a183" stroke-width="2"/>
+    <line x1="-8" y1="50" x2="-18" y2="-70" stroke="#b6a183" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+    <line x1="4" y1="46" x2="2" y2="-90" stroke="#b6a183" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+    <line x1="14" y1="52" x2="26" y2="-60" stroke="#b6a183" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+  </g>
+  <!-- hojas decorativas -->
+  <g opacity="0.25" stroke="#f5f0e9" stroke-width="2" fill="none">
+    <path d="M 150,480 Q 200,400 280,420 Q 240,470 150,480 Z"/>
+    <path d="M 220,460 Q 260,410 320,430"/>
+  </g>
+</svg>

@@ -1,11 +1,9 @@
-<title>Mini carrito lateral</title>
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ShoppingCart, X, Trash2, ArrowRight, Package } from 'lucide-react'
 import { useCart }  from '../../context/CartContext'
 import { useAuth }  from '../../context/AuthContext'
-
-const FREE_THRESHOLD = 120000
+import { FREE_THRESHOLD } from '../../config/shipping'
 
 export default function CartSidebar() {
   const [open, setOpen] = useState(false)

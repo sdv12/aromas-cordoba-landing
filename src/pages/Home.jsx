@@ -15,7 +15,7 @@ const SLIDES = [
   {
     headline: 'Aromas que\nTransforman tu Ambiente',
     sub: 'Aromatizantes, difusores y esencias de calidad premium. Fragancias exclusivas para cada espacio.',
-    bg: 'https://images.unsplash.com/photo-1616137150093-74a0c8fd8f61?w=1400&h=600&fit=crop',
+    bg: '/hero-difusores.svg',
     cta: 'Ver Catálogo', ctaLink: '/catalogo',
   },
   {
@@ -27,7 +27,7 @@ const SLIDES = [
   {
     headline: 'Pequeño Detalle,\nGran Sensación',
     sub: 'Difusores aromáticos para el auto, el hogar y la oficina. Fragancias que inspiran bienestar.',
-    bg: 'https://images.unsplash.com/photo-1610878185620-4a35027a5b7a?w=1400&h=600&fit=crop',
+    bg: '/hero-auto.svg',
     cta: 'Ver Productos', ctaLink: '/catalogo?categoria=auto',
   },
 ]
@@ -88,11 +88,11 @@ const FRAGANCIAS = [
 const FEATURED_DEMO = [
   { id: 'fd-1',  name: 'Aromatizante Ambiente y Telas 250ml',  brand: 'Aura', price: 3200, wholesalePrice: 2090, image: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop', rating: 5, reviews: 142, stock: 100, isFeatured: true, category: 'textil',   isOffer: false },
   { id: 'fd-2',  name: 'Difusor de Ambientes 60ml con Varillas', brand: 'Aura', price: 3800, wholesalePrice: 2538, image: 'https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=400&h=400&fit=crop', rating: 5, reviews: 98,  stock: 100, isFeatured: true, category: 'hogar',   isOffer: false },
-  { id: 'fd-3',  name: 'Difusor Aromático para Auto',           brand: 'Aura', price: 2700, wholesalePrice: 1804, image: 'https://images.unsplash.com/photo-1610878185620-4a35027a5b7a?w=400&h=400&fit=crop', rating: 5, reviews: 203, stock: 100, isFeatured: true, category: 'auto',    isOffer: false },
-  { id: 'fd-4',  name: 'Desodorante Concentrado 500ml',         brand: 'Aura', price: 4200, wholesalePrice: 3244, image: 'https://images.unsplash.com/photo-1616137150093-74a0c8fd8f61?w=400&h=400&fit=crop', rating: 5, reviews: 76,  stock: 100, isFeatured: true, category: 'hogar',   isOffer: false },
+  { id: 'fd-3',  name: 'Difusor Aromático para Auto',           brand: 'Aura', price: 2700, wholesalePrice: 1804, image: '/demo-difusor-auto.svg', rating: 5, reviews: 203, stock: 100, isFeatured: true, category: 'auto',    isOffer: false },
+  { id: 'fd-4',  name: 'Desodorante Concentrado 500ml',         brand: 'Aura', price: 4200, wholesalePrice: 3244, image: '/demo-desodorante.svg', rating: 5, reviews: 76,  stock: 100, isFeatured: true, category: 'hogar',   isOffer: false },
   { id: 'fd-5',  name: 'Esencia para Humidificador 60ml',       brand: 'Aura', price: 3500, wholesalePrice: 2538, image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop', rating: 5, reviews: 119, stock: 100, isFeatured: true, category: 'hogar',   isOffer: false },
   { id: 'fd-6',  name: 'Set 3 Velas Aromáticas Premium',        brand: 'Aura', price: 5800, wholesalePrice: 4350, image: 'https://images.unsplash.com/photo-1572726729207-a78d6feb18d7?w=400&h=400&fit=crop', rating: 5, reviews: 87,  stock: 100, isFeatured: true, category: 'velas',   isOffer: true,  offerPercent: 15 },
-  { id: 'fd-7',  name: 'Spray Textil Lavanda 300ml',            brand: 'Aura', price: 2900, wholesalePrice: 2090, image: 'https://images.unsplash.com/photo-1558171813-0d80d14a1c37?w=400&h=400&fit=crop', rating: 5, reviews: 65,  stock: 100, isFeatured: true, category: 'textil',  isOffer: false },
+  { id: 'fd-7',  name: 'Spray Textil Lavanda 300ml',            brand: 'Aura', price: 2900, wholesalePrice: 2090, image: '/demo-spray-textil.svg', rating: 5, reviews: 65,  stock: 100, isFeatured: true, category: 'textil',  isOffer: false },
   { id: 'fd-8',  name: 'Kit Iniciador Mayorista — 24 u.',       brand: 'Aura', price: 59232, wholesalePrice: 59232, image: 'https://images.unsplash.com/photo-1624454002302-36b824d7bd0a?w=400&h=400&fit=crop', rating: 5, reviews: 44, stock: 50, isFeatured: true, category: 'promo',   isOffer: true,  offerPercent: 20 },
 ]
 

@@ -18,8 +18,11 @@ const SORT_OPTIONS = [
   { value: 'name',       label: 'Nombre A–Z' },
 ]
 
+// maxPrice en Infinity: el slider de "Precio máximo" todavía está deshabilitado
+// ("Próximamente disponible" en ProductFilters) — hasta que se active de verdad,
+// no debe filtrar productos en silencio por un techo que el usuario no puede ver ni mover.
 const DEFAULT_FILTERS = {
-  categories: [], brands: [], maxPrice: 15000,
+  categories: [], brands: [], maxPrice: Infinity,
   onlyOffer: false, onlyFeatured: false, wholesale: false,
 }
 
@@ -105,7 +108,7 @@ export default function Catalog() {
         p.name.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
         p.brand.toLowerCase().includes(q) ||
-        (p.tags || []).some(t => t.includes(q))
+        (p.tags || []).some(t => t.toLowerCase().includes(q))
       )
     }
 

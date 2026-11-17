@@ -17,11 +17,17 @@ export default function Offers() {
           <Tag size={28} />
           <h1 className="text-3xl font-extrabold">Ofertas Especiales</h1>
         </div>
-        <p className="text-red-100 text-lg mb-4">Descuentos de hasta 30% en productos seleccionados</p>
-        <div className="flex items-center justify-center gap-2 text-sm text-red-200">
-          <Clock size={15} />
-          <span>Ofertas válidas por tiempo limitado · Stock sujeto a disponibilidad</span>
-        </div>
+        <p className="text-red-100 text-lg mb-4">
+          {offers.length > 0
+            ? 'Descuentos de hasta 30% en productos seleccionados'
+            : 'Por ahora no tenemos descuentos activos — volvé pronto'}
+        </p>
+        {offers.length > 0 && (
+          <div className="flex items-center justify-center gap-2 text-sm text-red-200">
+            <Clock size={15} />
+            <span>Ofertas válidas por tiempo limitado · Stock sujeto a disponibilidad</span>
+          </div>
+        )}
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

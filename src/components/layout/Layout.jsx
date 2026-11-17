@@ -1,6 +1,7 @@
 import Header          from './Header'
 import Footer          from './Footer'
 import WhatsAppButton  from '../ui/WhatsAppButton'
+import ChatAssistant    from '../ui/ChatAssistant'
 import AuthModal       from '../auth/AuthModal'
 import ToastContainer  from '../ui/ToastContainer'
 import CartSidebar     from '../cart/CartSidebar'
@@ -17,6 +18,7 @@ export default function Layout({ children }) {
         <Footer />
         <CartSidebar />
         <WhatsAppButton />
+        <ChatAssistant />
         <AuthModal />
         <ToastContainer />
       </div>

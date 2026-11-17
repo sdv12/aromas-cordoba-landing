@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#f5f0e9"/>
+  <g transform="translate(200,210)">
+    <!-- colgante difusor para auto -->
+    <line x1="0" y1="-140" x2="0" y2="-70" stroke="#b6a183" stroke-width="3"/>
+    <circle cx="0" cy="-150" r="8" fill="none" stroke="#273145" stroke-width="3"/>
+    <path d="M -55,-70 Q 0,-100 55,-70 L 65,70 Q 0,110 -65,70 Z" fill="#273145" stroke="#b6a183" stroke-width="3"/>
+    <circle cx="0" cy="0" r="38" fill="#f5f0e9"/>
+    <text x="0" y="10" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="24" fill="#273145">Aura</text>
+  </g>
+</svg>

@@ -38,11 +38,15 @@ export default function ProductDetail() {
   const [notifySent, setNotifySent] = useState(false)
 
   const product = products.find(p => String(p.id) === String(id))
+  const gallery = product ? [...new Set((product.images?.length ? product.images : [product.image]).filter(Boolean))] : []
+  const [activeImg, setActiveImg] = useState(0)
 
   usePageTitle(product ? product.name : 'Producto')
 
   useEffect(() => {
     if (product) trackView(product.id)
+    setActiveImg(0)
+    setImgError(false)
   }, [product?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!product) {
@@ -144,9 +148,9 @@ export default function ProductDetail() {
         {/* ── Imagen ── */}
         <div className="space-y-3">
           <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 dark:bg-navy-800 shadow-sm">
-            {!imgError ? (
+            {!imgError && gallery.length > 0 ? (
               <img
-                src={product.image}
+                src={gallery[activeImg] ?? gallery[0]}
                 alt={product.name}
                 className={`w-full h-full object-cover ${product.stock === 0 ? 'opacity-60' : ''}`}
                 onError={() => setImgError(true)}
@@ -180,17 +184,23 @@ export default function ProductDetail() {
             </button>
           </div>
 
-          {/* Thumbnails */}
-          <div className="flex gap-2">
-            {[product.image, product.image, product.image].map((src, i) => (
-              <div key={i} className={`w-20 h-20 rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
-                i === 0 ? 'border-primary-500' : 'border-gray-200 dark:border-navy-700 opacity-60 hover:opacity-100'
-              }`}>
-                <img src={src} alt="" className="w-full h-full object-cover"
-                  onError={e => { e.target.parentElement.style.display = 'none' }} />
-              </div>
-            ))}
-          </div>
+          {/* Thumbnails — solo si hay más de una foto real */}
+          {gallery.length > 1 && (
+            <div className="flex gap-2">
+              {gallery.map((src, i) => (
+                <button
+                  key={src}
+                  onClick={() => { setActiveImg(i); setImgError(false) }}
+                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
+                    i === activeImg ? 'border-primary-500' : 'border-gray-200 dark:border-navy-700 opacity-60 hover:opacity-100'
+                  }`}
+                >
+                  <img src={src} alt="" className="w-full h-full object-cover"
+                    onError={e => { e.target.parentElement.style.display = 'none' }} />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ── Info ── */}
@@ -201,16 +211,20 @@ export default function ProductDetail() {
             {product.name}
           </h1>
 
-          {/* Rating */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex">
-              {[1,2,3,4,5].map(s => (
-                <Star key={s} size={18} className={s <= Math.round(product.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'} />
-              ))}
+          {/* Rating — solo se muestra si hay reseñas reales */}
+          {product.reviews > 0 ? (
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex">
+                {[1,2,3,4,5].map(s => (
+                  <Star key={s} size={18} className={s <= Math.round(product.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'} />
+                ))}
+              </div>
+              <span className="text-sm font-semibold text-gray-700 dark:text-blue-200">{product.rating}</span>
+              <span className="text-sm text-gray-400">({product.reviews} reseñas)</span>
             </div>
-            <span className="text-sm font-semibold text-gray-700 dark:text-blue-200">{product.rating}</span>
-            <span className="text-sm text-gray-400">({product.reviews} reseñas)</span>
-          </div>
+          ) : (
+            <p className="text-sm text-gray-400 mb-4">Sin reseñas todavía — ¡sé el primero en comprarlo!</p>
+          )}
 
           {/* Price block */}
           <div className="bg-primary-50 dark:bg-navy-800 rounded-xl p-4 mb-4">
